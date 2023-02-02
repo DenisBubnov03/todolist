@@ -14,7 +14,8 @@ DEBUG = env.bool('DEBUG', default=False)
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
 MY_APPS = [
-    'core'
+    'core',
+    'goals'
 ]
 
 INSTALLED_APPS = [
