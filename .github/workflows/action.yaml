@@ -25,6 +25,8 @@ jobs:
         DB_HOST: ${{ secrets.DB_HOST }}
         IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
         IMAGE_FRONT: ${{ secrets.IMAGE_FRONT }}
+        SOCIAL_AUTH_VK_OAUTH2_KEY: ${{ secrets.SOCIAL_AUTH_VK_OAUTH2_KEY }}
+        SOCIAL_AUTH_VK_OAUTH2_SECRET: ${{ secrets.SOCIAL_AUTH_VK_OAUTH2_SECRET }}
       steps:
         - name: checkout
           uses: actions/checkout@v2
