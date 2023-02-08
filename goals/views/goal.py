@@ -1,36 +1,30 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import (
-    filters,
-    permissions
-)
-from rest_framework.generics import (
-    CreateAPIView,
-    ListAPIView,
-    RetrieveUpdateDestroyAPIView
-)
+from rest_framework import filters
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import IsAuthenticated
 
 from goals.filters import GoalDateFilter
 from goals.models import Goal
-from goals.serializers import (
-    GoalCreateSerializer,
-    GoalSerializer
-)
+from goals.permissions import GoalPermissions
+from goals.serializers import GoalSerializer, GoalCreateSerializer
 
 
 class GoalCreateView(CreateAPIView):
     model = Goal
     serializer_class = GoalCreateSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 
 class GoalView(RetrieveUpdateDestroyAPIView):
     model = Goal
     serializer_class = GoalSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [GoalPermissions]
 
     def get_queryset(self):
-        return Goal.objects.filter(user=self.request.user)
+        return Goal.objects.filter(
+            category__board__participants__user=self.request.user
+        ).exclude(status=Goal.Status.archived)
 
     def perform_destroy(self, instance):
         instance.status = Goal.Status.archived
@@ -40,8 +34,8 @@ class GoalView(RetrieveUpdateDestroyAPIView):
 
 class GoalListView(ListAPIView):
     model = Goal
-    permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalSerializer
+    permission_classes = [IsAuthenticated]
     pagination_class = LimitOffsetPagination
     filter_backends = [
         DjangoFilterBackend,
@@ -54,4 +48,6 @@ class GoalListView(ListAPIView):
     ordering = ['title']
 
     def get_queryset(self):
-        return Goal.objects.filter(user=self.request.user).exclude(status=Goal.Status.archived)
+        return Goal.objects.filter(
+            category__board__participants__user=self.request.user
+        ).exclude(status=Goal.Status.archived)
