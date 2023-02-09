@@ -15,7 +15,8 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
 MY_APPS = [
     'core',
-    'goals'
+    'goals',
+    'bot',
 ]
 
 INSTALLED_APPS = [
@@ -135,3 +136,7 @@ SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('SOCIAL_AUTH_VK_OAUTH2_SECRET')
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+
+# telegram
+TG_BOT_TOKEN = env.str('TG_BOT_TOKEN')
+HOST_NAME = env.str('HOST_NAME')

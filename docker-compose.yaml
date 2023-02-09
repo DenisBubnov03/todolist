@@ -40,8 +40,19 @@ services:
       migrations:
         condition: service_completed_successfully
 
+  bot:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - ./.env:/todolist/.env
+    command: python manage.py runbot
+
   frontend:
-    image: sermalenk/skypro-front:lesson-36
+    image: sermalenk/skypro-front:lesson-38
     restart: on-failure
     ports:
       - '${POSTGRES_PORT:-80}:80'
