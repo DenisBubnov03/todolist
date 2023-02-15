@@ -16,3 +16,6 @@ env/
 .python-version
 postgres-data
 __pycache__/
+.mypy_cache/
+.pytest_cache/
+.tests/

@@ -50,7 +50,7 @@ class BoardSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'created', 'updated')
 
     def update(self, instance, validated_data):
-        owner = validated_data.pop('user')
+        owner = validated_data.pop('user', None)
         new_participants = validated_data.pop('participants')
         new_by_id = {part['user'].id: part for part in new_participants}
 
@@ -62,7 +62,7 @@ class BoardSerializer(serializers.ModelSerializer):
                 elif old_participant.role != new_by_id[old_participant.user_id]['role']:
                     old_participant.role = new_by_id[old_participant.user_id]['role']
                     old_participant.save()
-                new_by_id.pop(old_participant.user_id)
+                new_by_id.pop(old_participant.user_id, None)
             for new_part in new_by_id.values():
                 BoardParticipant.objects.create(
                     board=instance, user=new_part['user'], role=new_part['role']

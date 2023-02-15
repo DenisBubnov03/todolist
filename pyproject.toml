@@ -17,6 +17,41 @@ django-filter = "^22.1"
 marshmallow-dataclass = "^8.5.11"
 
 
+[tool.poetry.group.dev.dependencies]
+django-stubs = "^1.14.0"
+types-requests = "^2.28.11.12"
+pytest-factoryboy = "^2.5.1"
+pytest-django = "^4.5.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+ignore_missing_imports = 'True'
+check_untyped_defs = 'True'
+disallow_any_generics = 'True'
+disallow_untyped_calls = 'True'
+disallow_untyped_decorators = 'True'
+ignore_errors = 'False'
+implicit_reexport = 'False'
+strict_optional = 'True'
+strict_equality = 'True'
+no_implicit_optional = 'True'
+warn_unused_ignores = 'True'
+warn_redundant_casts = 'True'
+warn_unused_configs = 'True'
+warn_unreachable = 'True'
+warn_no_return = 'True'
+
+[tool.django-stubs]
+django_settings_module = "todolist.settings"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = 'todolist.settings'
+python_files = [
+    'tests.py',
+    'test_*.py',
+    '*_test.py'
+]
